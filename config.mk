@@ -1,0 +1,4 @@
+export CONFIG_TARGET = x86_64-static-linux-musl
+export CONFIG_LINUX_ARCH = x86_64
+export CONFIG_GCC_ARCH = x86-64
+export CONFIG_STRIP_AND_DELETE_DOCS = 1
