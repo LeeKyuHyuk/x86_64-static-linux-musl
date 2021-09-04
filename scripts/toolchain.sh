@@ -109,12 +109,12 @@ check_environment_variable
 check_tarballs
 total_build_time=$(timer)
 
-step "[1/15] Create toolchain directory."
+step "[1/16] Create toolchain directory."
 rm -rf $BUILD_DIR $TOOLS_DIR
 mkdir -pv $BUILD_DIR $TOOLS_DIR
 ln -svf . $TOOLS_DIR/usr
 
-step "[2/15] Create the sysroot directory"
+step "[2/16] Create the sysroot directory"
 mkdir -pv $SYSROOT_DIR
 ln -svf . $SYSROOT_DIR/usr
 mkdir -pv $SYSROOT_DIR/lib
@@ -125,7 +125,7 @@ if [[ "$CONFIG_LINUX_ARCH" = "x86_64" ]] ; then
     ln -snvf lib $SYSROOT_DIR/lib64
 fi
 
-step "[3/15] Pkgconf 1.8.0"
+step "[3/16] Pkgconf 1.8.0"
 extract $SOURCES_DIR/pkgconf-1.8.0.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/pkgconf-1.8.0 && \
     ./configure \
@@ -153,7 +153,7 @@ sed -i -e "s,@STAGING_SUBDIR@,$SYSROOT_DIR,g" $TOOLS_DIR/bin/pkg-config
 sed -i -e "s,@STATIC@,," $TOOLS_DIR/bin/pkg-config
 rm -rf $BUILD_DIR/pkgconf-1.8.0
 
-step "[4/15] M4 1.4.19"
+step "[4/16] M4 1.4.19"
 extract $SOURCES_DIR/m4-1.4.19.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/m4-1.4.19 && \
     ./configure \
@@ -164,7 +164,7 @@ make -j$PARALLEL_JOBS -C $BUILD_DIR/m4-1.4.19
 make -j$PARALLEL_JOBS install -C $BUILD_DIR/m4-1.4.19
 rm -rf $BUILD_DIR/m4-1.4.19
 
-step "[5/15] Libtool 2.4.6"
+step "[5/16] Libtool 2.4.6"
 extract $SOURCES_DIR/libtool-2.4.6.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/libtool-2.4.6 && \
     ./configure \
@@ -175,7 +175,7 @@ make -j$PARALLEL_JOBS -C $BUILD_DIR/libtool-2.4.6
 make -j$PARALLEL_JOBS install -C $BUILD_DIR/libtool-2.4.6
 rm -rf $BUILD_DIR/libtool-2.4.6
 
-step "[6/15] Autoconf 2.71"
+step "[6/16] Autoconf 2.71"
 extract $SOURCES_DIR/autoconf-2.71.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/autoconf-2.71 && \
     ./configure \
@@ -186,7 +186,7 @@ make -j$PARALLEL_JOBS -C $BUILD_DIR/autoconf-2.71
 make -j$PARALLEL_JOBS install -C $BUILD_DIR/autoconf-2.71
 rm -rf $BUILD_DIR/autoconf-2.71
 
-step "[7/15] Automake 1.16.4"
+step "[7/16] Automake 1.16.4"
 extract $SOURCES_DIR/automake-1.16.4.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/automake-1.16.4 && \
     ./configure \
@@ -198,14 +198,14 @@ make -j$PARALLEL_JOBS install -C $BUILD_DIR/automake-1.16.4
 mkdir -p $SYSROOT_DIR/usr/share/aclocal
 rm -rf $BUILD_DIR/automake-1.16.4
 
-step "[8/15] Zlib 1.2.11"
+step "[8/16] Zlib 1.2.11"
 extract $SOURCES_DIR/zlib-1.2.11.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/zlib-1.2.11 && ./configure --prefix=$TOOLS_DIR )
 make -j1 -C $BUILD_DIR/zlib-1.2.11
 make -j1 install -C $BUILD_DIR/zlib-1.2.11
 rm -rf $BUILD_DIR/zlib-1.2.11
 
-step "[9/15] Bison 3.7.6"
+step "[9/16] Bison 3.7.6"
 extract $SOURCES_DIR/bison-3.7.6.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/bison-3.7.6 && \
     ./configure \
@@ -216,7 +216,7 @@ make -j$PARALLEL_JOBS -C $BUILD_DIR/bison-3.7.6
 make -j$PARALLEL_JOBS install -C $BUILD_DIR/bison-3.7.6
 rm -rf $BUILD_DIR/bison-3.7.6
 
-step "[10/15] Gawk 5.1.0"
+step "[10/16] Gawk 5.1.0"
 extract $SOURCES_DIR/gawk-5.1.0.tar.xz $BUILD_DIR
 ( cd $BUILD_DIR/gawk-5.1.0 && \
     ./configure \
@@ -229,7 +229,7 @@ make -j$PARALLEL_JOBS -C $BUILD_DIR/gawk-5.1.0
 make -j$PARALLEL_JOBS install -C $BUILD_DIR/gawk-5.1.0
 rm -rf $BUILD_DIR/gawk-5.1.0
 
-step "[11/15] Binutils 2.37"
+step "[11/16] Binutils 2.37"
 extract $SOURCES_DIR/binutils-2.37.tar.xz $BUILD_DIR
 mkdir -pv $BUILD_DIR/binutils-2.37/binutils-build
 ( cd $BUILD_DIR/binutils-2.37/binutils-build && \
@@ -250,7 +250,7 @@ make -j$PARALLEL_JOBS -C $BUILD_DIR/binutils-2.37/binutils-build
 make -j$PARALLEL_JOBS install -C $BUILD_DIR/binutils-2.37/binutils-build
 rm -rf $BUILD_DIR/binutils-2.37
 
-step "[12/15] Gcc 11.2.0 - Static"
+step "[12/16] Gcc 11.2.0 - Static"
 extract $SOURCES_DIR/gcc-11.2.0.tar.xz $BUILD_DIR
 extract $SOURCES_DIR/gmp-6.2.1.tar.xz $BUILD_DIR/gcc-11.2.0
 mv -v $BUILD_DIR/gcc-11.2.0/gmp-6.2.1 $BUILD_DIR/gcc-11.2.0/gmp
@@ -289,14 +289,14 @@ make -j$PARALLEL_JOBS gcc_cv_libc_provides_ssp=yes all-gcc all-target-libgcc -C 
 make -j$PARALLEL_JOBS install-gcc install-target-libgcc -C $BUILD_DIR/gcc-11.2.0/gcc-static-build
 rm -rf $BUILD_DIR/gcc-11.2.0
 
-step "[13/15] Linux 3.10.61 API Headers"
+step "[13/16] Linux 3.10.61 API Headers"
 extract $SOURCES_DIR/linux-3.10.61.tar.xz $BUILD_DIR
 make -j$PARALLEL_JOBS ARCH=$CONFIG_LINUX_ARCH mrproper -C $BUILD_DIR/linux-3.10.61
 make -j$PARALLEL_JOBS ARCH=$CONFIG_LINUX_ARCH headers_check -C $BUILD_DIR/linux-3.10.61
 make -j$PARALLEL_JOBS ARCH=$CONFIG_LINUX_ARCH INSTALL_HDR_PATH=$SYSROOT_DIR headers_install -C $BUILD_DIR/linux-3.10.61
 rm -rf $BUILD_DIR/linux-3.10.61
 
-step "[14/15] musl 1.2.2"
+step "[14/16] musl 1.2.2"
 extract $SOURCES_DIR/musl-1.2.2.tar.gz $BUILD_DIR
 mkdir $BUILD_DIR/musl-1.2.2/musl-build
 ( cd $BUILD_DIR/musl-1.2.2/musl-build && \
@@ -310,7 +310,7 @@ make -j$PARALLEL_JOBS DESTDIR=$SYSROOT_DIR install -C $BUILD_DIR/musl-1.2.2/musl
 install -m 0644 -D $SUPPORT_DIR/musl/queue.h $SYSROOT_DIR/include/sys/queue.h
 rm -rf $BUILD_DIR/musl-1.2.2
 
-step "[15/15] Gcc 11.2.0 - Final"
+step "[15/16] Gcc 11.2.0 - Final"
 extract $SOURCES_DIR/gcc-11.2.0.tar.xz $BUILD_DIR
 extract $SOURCES_DIR/gmp-6.2.1.tar.xz $BUILD_DIR/gcc-11.2.0
 mv -v $BUILD_DIR/gcc-11.2.0/gmp-6.2.1 $BUILD_DIR/gcc-11.2.0/gmp
@@ -352,6 +352,29 @@ if [ ! -e $TOOLS_DIR/bin/$CONFIG_TARGET-cc ]; then
     ln -vf $TOOLS_DIR/bin/$CONFIG_TARGET-gcc $TOOLS_DIR/bin/$CONFIG_TARGET-cc
 fi
 rm -rf $BUILD_DIR/gcc-11.2.0
+
+step "[16/16] OpenSSL 1.1.1d"
+extract $SOURCES_DIR/openssl-1.1.1d.tar.gz $BUILD_DIR
+( cd $BUILD_DIR/openssl-1.1.1d && \
+    CC="$TOOLS_DIR/bin/$CONFIG_TARGET-gcc" \
+    CXX="$TOOLS_DIR/bin/$CONFIG_TARGET-g++" \
+    AR="$TOOLS_DIR/bin/$CONFIG_TARGET-ar" \
+    AS="$TOOLS_DIR/bin/$CONFIG_TARGET-as" \
+    LD="$TOOLS_DIR/bin/$CONFIG_TARGET-ld" \
+    RANLIB="$TOOLS_DIR/bin/$CONFIG_TARGET-ranlib" \
+    READELF="$TOOLS_DIR/bin/$CONFIG_TARGET-readelf" \
+    STRIP="$TOOLS_DIR/bin/$CONFIG_TARGET-strip" \
+    ./Configure \
+    linux-x86_64 \
+    --prefix=/usr \
+    --openssldir=/etc/ssl \
+    --libdir=/lib \
+    shared \
+    zlib-dynamic )
+sed -i -e "s# build_tests##" $BUILD_DIR/openssl-1.1.1d/Makefile
+make -j1 -C $BUILD_DIR/openssl-1.1.1d
+make -j1 DESTDIR=$SYSROOT_DIR install -C $BUILD_DIR/openssl-1.1.1d
+rm -rf $BUILD_DIR/openssl-1.1.1d
 
 do_strip
 
